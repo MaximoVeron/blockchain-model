@@ -1,3 +1,6 @@
+import { time } from 'console';
+import crypto from 'crypto';
+
 export class Block {
   constructor(timestamp, lastHash, hash, data) {
     this.timestamp = timestamp;
@@ -18,8 +21,12 @@ export class Block {
   static mineBlock(lastBlock, data) {
     const timestamp = Date.now();
     const lastHash = lastBlock.hash;
-    const hash = '0'.repeat(3); // después esto lo vas a calcular
+    const hash = this.hash(timestamp, lastHash, data); // después esto lo vas a calcular
 
     return new this(timestamp, lastHash, hash, data);
+  }
+  static hash(timestamp, lastHash, data) {
+    const dataToHash = `${timestamp}${lastHash}${JSON.stringify(data)}`;
+    return crypto.createHash('sha256').update(dataToHash).digest('hex');
   }
 }

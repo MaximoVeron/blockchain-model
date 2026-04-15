@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
     "dev": "nodemon app.js"
   },
   "keywords": [],
@@ -13,5 +13,8 @@
   "type": "module",
   "devDependencies": {
     "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "jest": "^30.3.0"
   }
 }
