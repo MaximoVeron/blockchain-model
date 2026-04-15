@@ -1,5 +1,5 @@
-import { BlockChain } from './blockChain.js';
-import { Block } from './block.js';
+import { BlockChain } from './blockchain/blockChain.js';
+import { Block } from './blockchain/block.js';
 
 describe('blockchain', () => {
   let bc, bc2;
@@ -27,5 +27,15 @@ describe('blockchain', () => {
     bc2.addBlock('foo');
     bc2.chain[1].data = 'asda';
     expect(bc2.isValidChain(bc2.chain)).toBe(false);
+  });
+  it('Replace the chain is a valid chain', () => {
+    bc2.addBlock('foo2');
+    bc.replaceChain(bc2.chain);
+    expect(bc.chain).toEqual(bc2.chain);
+  });
+  it('Not replace the blockchain with new chain', () => {
+    bc.addBlock('foo3');
+    bc.replaceChain(bc2.chain);
+    expect(bc.chain).not.toEqual(bc2.chain);
   });
 });

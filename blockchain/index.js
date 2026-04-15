@@ -32,4 +32,15 @@ export class BlockChain {
 
     return true; // Si pasa todo el ciclo, la cadena es válida
   }
+  replaceChain(newChain) {
+    if (newChain.length <= this.chain.length) {
+      return console.log('cadena inferior');
+    } else if (this.isValidChain(newChain) === false) {
+      return console.log('cadena invalida');
+    } else {
+      this.chain = newChain;
+      console.log('reemplazando cadena');
+      return;
+    }
+  }
 }
