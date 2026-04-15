@@ -16,7 +16,7 @@ export class Block {
  data: ${this.data}`;
   }
   static genesis() {
-    return new this(Date.now(), '0'.repeat(64), '0'.repeat(64), []);
+    return new this(0, '0'.repeat(64), '0'.repeat(64), []);
   }
   static mineBlock(lastBlock, data) {
     const timestamp = Date.now();
@@ -28,5 +28,10 @@ export class Block {
   static hash(timestamp, lastHash, data) {
     const dataToHash = `${timestamp}${lastHash}${JSON.stringify(data)}`;
     return crypto.createHash('sha256').update(dataToHash).digest('hex');
+  }
+
+  static blockHash(block) {
+    const { timestamp, lastHash, data } = block;
+    return Block.hash(timestamp, lastHash, data);
   }
 }
