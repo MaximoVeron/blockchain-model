@@ -1,5 +1,26 @@
-import { Block } from './blockchain/block.js';
+import express from 'express';
+import { BlockChain } from '../blockchain/blockChain.js';
+import 'dotenv/config';
+import { p2pServer, p2pServer } from './p2p.server.js';
 
-// block genesis funciona como lastBlock
-const fooBlock = Block.mineBlock(Block.genesis(), 'data');
-console.log(fooBlock.toString());
+const app = express();
+app.use(express.json());
+const PORT = process.env.PORT || 3000;
+const bc = new BlockChain();
+const p2pServer = new p2pServer(bc);
+
+app.get('/blocks', (req, res) => {
+  res.json(bc.chain);
+});
+
+app.post('/mine', (req, res) => {
+  const block = bc.addBlock(req.body);
+  console.log({ data: block });
+  res.redirect('/blocks');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running in port ${PORT}`);
+});
+
+p2pServer.listen();
