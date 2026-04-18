@@ -33,13 +33,32 @@ export class p2pServer {
   connectSocket(socket) {
     this.sockets.push(socket);
     console.log('[+]socket connected');
+    this.messageHandler(socket);
+    this.sendChain();
   }
-  connectToPeers() {
-    peers.forEach((peer) => {
-      const socket = new WebSocket(peer);
-      socket.on('open', () => {
-        this.connectSocket(socket);
-      });
+
+  messageHandler(socket) {
+    socket.on('message', (message) => {
+      const data = JSON.parse(message);
+      this.BlockChain.replaceChain(data);
+    });
+  }
+
+  sendChain(socket) {
+    socket.send(JSON.stringify(this.BlockChain.chain));
+  }
+
+  syncChains() {
+    this.sockets.forEach((socket) => {
+      this.sendChain(socket);
     });
   }
 }
+
+// para establecer la conexion desde la misma maquina
+/*
+    $env:HTTP_PORT=3002
+    $env:P2P_PORT=5002
+    $env:PEERS="ws://localhost:5001"
+    npm run dev
+*/
